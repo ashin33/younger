@@ -11,11 +11,11 @@ namespace App\Http\Controllers\Younger;
 
 use App\Models\Order;
 use App\Models\OrderDate;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+
 
 class YoungerController
 {
@@ -30,23 +30,7 @@ class YoungerController
 
     public function detail(Request $request, $date)
     {
-        $query = Order::query()->where('order_date', '=', $date);
-        if ($request->get('building')) {
-            $query->where('building', '=', $request->get('building'));
-        }
-        if ($request->get('floor')) {
-            $query->where('floor', '=', $request->get('floor'));
-        }
-        if($request->get('room'))
-        {
-            $query->where('room', '=', $request->get('room'));
-        }
-        if($request->get('sort'))
-        {
-            $query->orderBy($request->get('sort'));
-        }else{
-            $query->orderByDesc('id');
-        }
+        $query = $this->query($request, $date);
         $rows = $query->paginate(20);
         $rows->appends($request->all());
         $buildings = Order::query()->where('order_date', '=', $date)->groupBy(['building'])->get(['building']);
@@ -63,24 +47,7 @@ class YoungerController
 
     public function download(Request $request, $date)
     {
-        $query = Order::query()->where('order_date', '=', $date);
-        if($request->get('building'))
-        {
-            $query->where('building', '=', $request->get('building'));
-        }
-        if ($request->get('floor')) {
-            $query->where('floor', '=', $request->get('floor'));
-        }
-        if($request->get('room'))
-        {
-            $query->where('room', '=', $request->get('room'));
-        }
-        if($request->get('sort'))
-        {
-            $query->orderBy($request->get('sort'));
-        }else{
-            $query->orderByDesc('id');
-        }
+        $query = $this->query($request, $date);
         $data = $query->get();
         $spans = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN', 'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AV', 'AW', 'AX', 'AY', 'AZ', 'BA', 'BB', 'BC', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BK', 'BL', 'BM', 'BN', 'BO', 'BP', 'BQ', 'BR', 'BS', 'BT', 'BU', 'BV', 'BW', 'BX', 'BY', 'BZ', 'CA', 'CB', 'CC', 'CD', 'CE', 'CF', 'CG', 'CH', 'CI', 'CJ', 'CK', 'CL', 'CM', 'CN', 'CO', 'CP', 'CQ', 'CR', 'CS', 'CT', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ', 'DA', 'DB', 'DC', 'DD', 'DE', 'DF', 'DG', 'DH', 'DI', 'DJ', 'DK', 'DL', 'DM', 'DN', 'DO', 'DP', 'DQ', 'DR', 'DS', 'DT', 'DU', 'DV', 'DW', 'DX', 'DY', 'DZ'];
 
@@ -126,5 +93,28 @@ class YoungerController
         header("Content-Disposition:attachment;filename=$file_name.xlsx");//attachment新窗口打印inline本窗口打印
         $objWriter = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $objWriter->save('php://output');
+    }
+
+    protected function query(Request $request, $date): Builder
+    {
+        $query = Order::query()->where('order_date', '=', $date);
+        if ($request->get('building')) {
+            $query->where('building', '=', $request->get('building'));
+        }
+        if ($request->get('floor')) {
+            $query->where('floor', '=', $request->get('floor'));
+        }
+        if($request->get('room'))
+        {
+            $query->where('room', '=', $request->get('room'));
+        }
+        if($request->get('sort'))
+        {
+            $query->orderBy($request->get('sort'));
+        }else{
+            $query->orderByDesc('id');
+        }
+
+        return $query;
     }
 }
