@@ -5,11 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderDate;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class YoungerController extends Controller
 {
@@ -65,7 +61,7 @@ class YoungerController extends Controller
                     'rice_bowl' => null,
                     'soup_pot' => null,
                     'extra_meal' => null,
-                    'remark' => $entry['remark'] ?? null,
+                    'remark' => $entry['field_8'] ?? null,
                     'extension' => $entry['x_field_1'] ?? null,
                     'creator_name' => $entry['creator_name'] ?? null,
                     'info_filling_duration' => $entry['info_filling_duration'] ?? null,
@@ -92,7 +88,7 @@ class YoungerController extends Controller
                     'rice_bowl' => $value['name'] . '-'. $i,
                     'soup_pot' => null,
                     'extra_meal' => null,
-                    'remark' => $entry['remark'] ?? null,
+                    'remark' => $entry['field_8'] ?? null,
                     'extension' => $entry['x_field_1'] ?? null,
                     'creator_name' => $entry['creator_name'] ?? null,
                     'info_filling_duration' => $entry['info_filling_duration'] ?? null,
@@ -119,7 +115,7 @@ class YoungerController extends Controller
                     'rice_bowl' => null,
                     'soup_pot' => $value['name'] . '-'. $i,
                     'extra_meal' => null,
-                    'remark' => $entry['remark'] ?? null,
+                    'remark' => $entry['field_8'] ?? null,
                     'extension' => $entry['x_field_1'] ?? null,
                     'creator_name' => $entry['creator_name'] ?? null,
                     'info_filling_duration' => $entry['info_filling_duration'] ?? null,
@@ -146,7 +142,7 @@ class YoungerController extends Controller
                     'rice_bowl' => null,
                     'soup_pot' => null,
                     'extra_meal' => $value['name'] . '-'. $i,
-                    'remark' => $entry['remark'] ?? null,
+                    'remark' => $entry['field_8'] ?? null,
                     'extension' => $entry['x_field_1'] ?? null,
                     'creator_name' => $entry['creator_name'] ?? null,
                     'info_filling_duration' => $entry['info_filling_duration'] ?? null,
