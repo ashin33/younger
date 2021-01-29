@@ -84,6 +84,7 @@ class YoungerController
             foreach ($data as $key => $value) {
                 // 单元格内容写入
                 $sheet->setCellValue($spans[$key] . $row, $value);
+                $sheet->getStyle($spans[$key] . $row)->getAlignment()->setWrapText(true);
             }
             $row++;
         }
