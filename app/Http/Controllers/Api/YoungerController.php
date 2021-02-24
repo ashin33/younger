@@ -162,4 +162,9 @@ class YoungerController extends Controller
             'created' => date('Y-m-d H:i:s')
         ]);
     }
+
+    public function getYiLianYunCode(Request $request)
+    {
+
+    }
 }

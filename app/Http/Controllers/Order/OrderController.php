@@ -6,7 +6,7 @@
  * Time: 18:28
  */
 
-namespace App\Http\Controllers\Younger;
+namespace App\Http\Controllers\Order;
 
 
 use App\Models\Order;
@@ -17,7 +17,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 
-class YoungerController
+class OrderController
 {
     public function index(Request $request)
     {

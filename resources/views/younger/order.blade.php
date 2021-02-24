@@ -1,23 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>younger</title>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+@extends('layouts.app')
 
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/select2/select2.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-</head>
-<body>
+@section('header')
+
+@endsection
+
+@section('content')
 <div class="row">
     <div class="col-lg-12">
 
         <div class="ibox float-e-margins">
             <div class="ibox-content">
-                <form action="{{route('younger.detail', $date)}}" method="get" id="form">
+                <form action="{{route('order.detail', $date)}}" method="get" id="form">
                     <div class="row">
                         <div class="col-md-2 m-b">
                             <select class="form-control input-sm select2-input select2" name="building">
@@ -66,14 +59,14 @@
                             <button type="submit" class="btn btn-sm btn-primary">
                                 搜索
                             </button>
-                            <button type="submit" formaction="{{ route('younger.download',$date) }}"
+                            <button type="submit" formaction="{{ route('order.download',$date) }}"
                                     id="export_excel" class="btn btn-sm btn-success">
                                                 导出
                                             </button>
                             </span>
                         </div>
                         <div class="col-sm-2 m-b">
-                            <a class="btn btn-sm btn-info" href="{{route('younger.index')}}"> 返回首页</a>
+                            <a class="btn btn-sm btn-info" href="{{route('order.index')}}"> 返回首页</a>
                         </div>
                     </div>
 
@@ -132,14 +125,13 @@
 
 </div>
 
-</body>
-<script src="{{asset('js/jquery-2.2.3.min.js')}}" charset="utf-8"></script>
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('js/select2/select2.full.min.js') }}"></script>
-<script src="{{ asset('js/select2/zh-CN.js') }}"></script>
-<script>
-    $(function () {
-        $('.select2').select2();
-    });
-</script>
-</html>
+@endsection
+
+
+@section('footer')
+    <script>
+        $(function () {
+            $('.select2').select2();
+        });
+    </script>
+@endsection

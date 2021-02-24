@@ -11,14 +11,25 @@
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+Route::get('/', function () {
+    return redirect()->route('order.index');
+});
+
+
 
 Route::group([
-    'namespace' => 'Younger'
+    'namespace' => 'Order',
+    'prefix' => 'orders'
 ], function () {
-    Route::get('/', 'YoungerController@index')->name('younger.index');
-    Route::get('detail/{date}', 'YoungerController@detail')->name('younger.detail');
-    Route::get('/download/{date}', 'YoungerController@download')->name('younger.download');
+    Route::get('/', 'OrderController@index')->name('order.index');
+    Route::get('/{date}/detail', 'OrderController@detail')->name('order.detail');
+    Route::get('/{date}/download', 'OrderController@download')->name('order.download');
+});
+
+Route::group([
+    'namespace' => 'Printer',
+    'prefix' => 'printer'
+], function () {
+    Route::get('/manage', 'PrinterController@manage')->name('printer.manage');
+    Route::get('/list', 'PrinterController@list')->name('printer.list');
 });
