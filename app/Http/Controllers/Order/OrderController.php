@@ -8,9 +8,12 @@
 
 namespace App\Http\Controllers\Order;
 
-
+use App\Models\Application;
 use App\Models\Order;
-use App\Models\OrderDate;
+use App\Models\Printer;
+use App\Service\YiLianYunService\ApplicationService;
+use App\Service\YiLianYunService\PrinterService;
+use App\Service\YiLianYunService\PrintService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -19,16 +22,8 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class OrderController
 {
-    public function index(Request $request)
-    {
-        $rows = OrderDate::query()->paginate(20);
-        $rows->appends($request->all());
-        return view('younger.date')->with([
-            'rows' => $rows
-        ]);
-    }
 
-    public function detail(Request $request, $date)
+    public function index(Request $request, $date)
     {
         $query = $this->query($request, $date);
         $rows = $query->paginate(20);
@@ -36,7 +31,7 @@ class OrderController
         $buildings = Order::query()->where('order_date', '=', $date)->groupBy(['building'])->get(['building']);
         $floors = Order::query()->where('order_date', '=', $date)->groupBy(['floor'])->get(['floor']);
         $rooms = Order::query()->where('order_date', '=', $date)->groupBy(['room'])->get(['room']);
-        return view('younger.order')->with([
+        return view('order.index')->with([
             'rows' => $rows,
             'date' => $date,
             'buildings' => $buildings,
@@ -88,7 +83,7 @@ class OrderController
             }
             $row++;
         }
-        $file_name = 'younger' . $date;
+        $file_name = 'order' . $date;
         header('pragma:public');
         header('Content-type:application/vnd.ms-excel;charset=utf-8;name="' . $file_name . '.xlsx"');
         header("Content-Disposition:attachment;filename=$file_name.xlsx");//attachment新窗口打印inline本窗口打印
@@ -117,5 +112,47 @@ class OrderController
         }
 
         return $query;
+    }
+
+    public function print(Request $request, $id): \Illuminate\Http\JsonResponse
+    {
+        $data = $request->all();
+        /**
+         * @var $order Order
+         */
+        $order = Order::query()->find($id);
+        if(empty($order)){
+            return response()->json(['code' => 201, 'msg' => '订单不存在']);
+        }
+        /**
+         * @var $application Application
+         * @var $printer Printer
+         */
+        $application = Application::getEnabledApplication();
+        $printer = Printer::getEnabledPrinter();
+        $machine_code = $printer->getMachineCode();
+
+        $application_service = new ApplicationService($application);
+        try{
+            $access_token = $application_service->getToken();
+        }catch (\Exception $exception){
+            return response()->json(['code' => 201, 'msg' => $exception->getMessage()]);
+        }
+        $config = $application_service->getConfig();
+
+
+        $printService = new PrintService($access_token, $config);
+
+        try{
+            $res = $printService->print($machine_code, $order);
+        }catch (\Exception $e) {
+            return response()->json(['code' => 201, 'msg' => $e->getMessage()]);
+        }
+        if($printService->isSuccess($res)){
+            $printer->setAuthorized();
+            return response()->json(['code' => 200, 'msg' => '已推送打打印队列']);
+        }else{
+            return response()->json(['code' => 201, 'msg' => $printService->getErrorMsg($res)]);
+        }
     }
 }

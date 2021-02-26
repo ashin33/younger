@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 Route::group([
 
 ], function () {
-    Route::post('order_entry', 'YoungerController@orderEntry')->name('younger.order_entry');
-    Route::get('order_list', 'YoungerController@order')->name('younger.order');
-    Route::get('order_date_list', 'YoungerController@date')->name('younger.date');
+    Route::post('order_entry', 'YoungerController@orderEntry')->name('order.order_entry');
+    Route::get('order_list', 'YoungerController@order')->name('order.order');
+    Route::get('order_date_list', 'YoungerController@date')->name('order.date');
 });

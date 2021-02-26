@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Date extends Migration
+class Applications extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,13 @@ class Date extends Migration
      */
     public function up()
     {
-        Schema::create('order_dates', function (Blueprint $table) {
+        Schema::create('applications', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date')->nullable($value = true)->comment('订单日期');
+            $table->string('name')->comment('应用名称');
+            $table->string('client_id')->comment('应用ID');
+            $table->string('client_secret')->comment('应用密钥');
+            $table->string('access_token')->nullable($value = true)->comment('access_token');
+            $table->string('status',16)->comment('启用状态');
             $table->timestamp('created_at')->useCurrent()->comment('创建日期');
             $table->timestamp('updated_at')->nullable($value = true)->comment('更新日期');
         });
@@ -28,6 +32,6 @@ class Date extends Migration
      */
     public function down()
     {
-        Schema::drop('order_dates');
+        Schema::drop('applications');
     }
 }

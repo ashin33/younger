@@ -31,7 +31,7 @@
                                     <td class="text-middle">{{$row->date}}</td>
                                     <td class="text-middle">
                                         <a class="btn-success btn btn-xs"
-                                           href="{{ route('order.detail', $row->date) }}">
+                                           href="{{ route('order.index', $row->date) }}">
                                             明细
                                         </a>
                                         <a class="btn-primary btn btn-xs"

@@ -24,23 +24,35 @@
             </li>
 
 
-            <li class="@if(current_namespace() == 'Order') active @endif">
-                <a href="{{ route('order.index') }}" style="">
+            <li class="@if(current_namespace() == 'OrderDate') active @endif">
+                <a href="{{ route('order_date.index') }}" style="">
                     <i class="fa fa-book"></i> <span class="nav-label">订单列表</span>
                 </a>
             </li>
 
-            <li class="@if(current_namespace() == 'Printer') active @endif">
-                <a href="#"><i class="fa fa-print"></i> <span class="nav-label">打印机管理</span>
-                    <span class="fa arrow"></span>
+            <li class="@if(current_namespace() == 'ApplicationService') active @endif">
+                <a href="{{ route('application.index') }}" style="">
+                    <i class="fa fa-terminal"></i> <span class="nav-label">易联云应用列表</span>
                 </a>
-                <ul class="nav nav-second-level collapse">
-                    <li class="@if(route_name() == 'printer.manage') active @endif"><a
-                                href="{{ route('printer.manage') }}">机器管理</a></li>
-                    <li class="@if(route_name() == 'printer.list') active @endif"><a
-                                href="{{ route('printer.list') }}">打印列表</a></li>
-                </ul>
             </li>
+
+            <li class="@if(current_namespace() == 'Printer') active @endif">
+                <a href="{{ route('printer.index') }}" style="">
+                    <i class="fa fa-print"></i> <span class="nav-label">打印机列表</span>
+                </a>
+            </li>
+
+{{--            <li class="@if(current_namespace() == 'Printer') active @endif">--}}
+{{--                <a href="#"><i class="fa fa-print"></i> <span class="nav-label">打印机管理</span>--}}
+{{--                    <span class="fa arrow"></span>--}}
+{{--                </a>--}}
+{{--                <ul class="nav nav-second-level collapse">--}}
+{{--                    <li class="@if(route_name() == 'printer.manage') active @endif"><a--}}
+{{--                                href="{{ route('printer.manage') }}">机器管理</a></li>--}}
+{{--                    <li class="@if(route_name() == 'printer.list') active @endif"><a--}}
+{{--                                href="{{ route('printer.list') }}">打印列表</a></li>--}}
+{{--                </ul>--}}
+{{--            </li>--}}
         </ul>
 
     </div>

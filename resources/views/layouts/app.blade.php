@@ -28,7 +28,7 @@
 
     <!-- iCheck -->
     <link href="{{ asset('css/iCheck/flat/green.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('css/iCheck/custom.css') }}" rel="stylesheet">
     @yield('header')
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
@@ -39,6 +39,10 @@
 
         .swal2-container {
             z-index: 999999 !important;
+        }
+
+        .select2-dropdown--below{
+            z-index: 3000
         }
     </style>
 </head>
@@ -54,9 +58,6 @@
                 <div class="navbar-header">
                     <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
                         <i class="fa fa-bars"></i>
-                    </a>
-                    <a class="navbar-minimalize minimalize-styl-2 btn btn-success " href="{{url()->previous()}}">
-                        <i class="fa fa-reply"> 返回上一页</i>
                     </a>
                 </div>
 
@@ -134,6 +135,8 @@
 <script src="/js/select2/select2.full.min.js"></script>
 <script src="/js/select2/zh-CN.js"></script>
 <script src="/js/admin.js"></script>
+
+<script src="{{ asset('js/iCheck/icheck.min.js') }}"></script>
 <script>
     $('#reset-btn').click(function () {
         var formObj = $(this).parents('form');
