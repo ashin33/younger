@@ -4,6 +4,7 @@
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="{{asset('favicon.ico')}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -11,6 +12,13 @@
     <title>
         {{ config('app.name') }}
     </title>
+
+    <!--可以在收藏夹中显示出图标-->
+    <link rel="Bookmark" type="image/jpg" href="{{asset('img/younger.jpg')}}" />
+    <!--可以在地址栏中显示出图标-->
+    <link rel="icon" type="image/png" href="{{asset('img/younger.ico')}}" />
+    <link rel="shortcut icon" type="image/png" href="{{asset('img/younger.ico')}}" />
+
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-tagsinput/bootstrap-tagsinput.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
