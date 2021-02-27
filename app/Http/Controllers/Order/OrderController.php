@@ -8,11 +8,11 @@
 
 namespace App\Http\Controllers\Order;
 
+use App\Http\Controllers\Controller;
 use App\Models\Application;
-use App\Models\Order;
+use App\Models\V1Order;
 use App\Models\Printer;
 use App\Service\YiLianYunService\ApplicationService;
-use App\Service\YiLianYunService\PrinterService;
 use App\Service\YiLianYunService\PrintService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 
-class OrderController
+class OrderController extends Controller
 {
 
     public function index(Request $request, $date)
@@ -28,9 +28,9 @@ class OrderController
         $query = $this->query($request, $date);
         $rows = $query->paginate(20);
         $rows->appends($request->all());
-        $buildings = Order::query()->where('order_date', '=', $date)->groupBy(['building'])->get(['building']);
-        $floors = Order::query()->where('order_date', '=', $date)->groupBy(['floor'])->get(['floor']);
-        $rooms = Order::query()->where('order_date', '=', $date)->groupBy(['room'])->get(['room']);
+        $buildings = V1Order::query()->where('order_date', '=', $date)->groupBy(['building'])->get(['building']);
+        $floors = V1Order::query()->where('order_date', '=', $date)->groupBy(['floor'])->get(['floor']);
+        $rooms = V1Order::query()->where('order_date', '=', $date)->groupBy(['room'])->get(['room']);
         return view('order.index')->with([
             'rows' => $rows,
             'date' => $date,
@@ -93,7 +93,7 @@ class OrderController
 
     protected function query(Request $request, $date): Builder
     {
-        $query = Order::query()->where('order_date', '=', $date);
+        $query = V1Order::query()->where('order_date', '=', $date);
         if ($request->get('building')) {
             $query->where('building', '=', $request->get('building'));
         }
@@ -118,9 +118,9 @@ class OrderController
     {
         $data = $request->all();
         /**
-         * @var $order Order
+         * @var $order V1Order
          */
-        $order = Order::query()->find($id);
+        $order = V1Order::query()->find($id);
         if(empty($order)){
             return response()->json(['code' => 201, 'msg' => '订单不存在']);
         }
@@ -149,9 +149,10 @@ class OrderController
             return response()->json(['code' => 201, 'msg' => $e->getMessage()]);
         }
         if($printService->isSuccess($res)){
-            $printer->setAuthorized();
+            $order->setPrintSuccess();
             return response()->json(['code' => 200, 'msg' => '已推送打打印队列']);
         }else{
+            $order->setPrintFAIL($printService->getErrorMsg($res));
             return response()->json(['code' => 201, 'msg' => $printService->getErrorMsg($res)]);
         }
     }

@@ -33,7 +33,7 @@ class Order extends Migration
             $table->string('info_filling_duration')->nullable($value = true)->comment('填写时长');
             $table->string('info_region')->nullable($value = true)->comment('填写地区');
             $table->string('info_remote_ip')->nullable($value = true)->comment('ip');
-            $table->date('order_date')->nullable($value = true)->comment('access_token')->index('下单日期');
+            $table->date('order_date')->nullable($value = true)->index('order_date')->comment('下单日期');
             $table->timestamp('created_at')->useCurrent()->comment('创建时间');
             $table->timestamp('updated_at')->nullable($value = true)->comment('更新时间');
         });

@@ -1,15 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
+use App\Models\Application;
+use App\Models\V1Order;
 use App\Models\OrderDate;
+use App\Models\Printer;
+use App\Service\YiLianYunService\ApplicationService;
+use App\Service\YiLianYunService\PrintService;
 use Illuminate\Http\Request;
 
 class YoungerController extends Controller
 {
-    protected $food_arr = [];
 
     public function orderEntry(Request $request)
     {
@@ -154,17 +157,47 @@ class YoungerController extends Controller
                 ];
             }
         }
-        Order::query()->insert($order_insert_data);
+
+        $canPrint = true;
+        $application = Application::getEnabledApplication();
+        if(!empty($application)){
+            $application_service = new ApplicationService($application);
+            $access_token = $application_service->getToken();
+            $config = $application_service->getConfig();
+            $print_service = new PrintService($access_token, $config);
+            $printer = Printer::getEnabledPrinter();
+            if(empty($printer)){
+                $canPrint = false;
+            }else{
+                $machine_code = $printer->getMachineCode();
+            }
+        }else{
+            $canPrint = false;
+        }
+
+        foreach($order_insert_data as $k => $v){
+            $order = new V1Order();
+            $order->fill($v);
+            $order->save();
+            if($canPrint){
+                $res = $print_service->print($machine_code, $order);
+                if($print_service->isSuccess($res)){
+                    $order->setPrintSuccess();
+                }else{
+                    $order->setPrintFAIL($print_service->getErrorMsg());
+                }
+            }else{
+                $order->setPrintWaiting();
+            }
+        }
+
         OrderDate::query()->updateOrCreate([
             'date' => $order_date
         ],[
             'date' => $order_date,
             'created' => date('Y-m-d H:i:s')
         ]);
-    }
-
-    public function getYiLianYunCode(Request $request)
-    {
 
     }
+
 }

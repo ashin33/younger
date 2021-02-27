@@ -9,22 +9,12 @@
 namespace App\Http\Controllers\Application;
 
 
+use App\Http\Controllers\Controller;
 use App\Models\Application;
-use App\Models\Order;
-use App\Models\OrderDate;
-use App\Models\Platform;
-use App\Models\Printer;
-use App\Models\TaxSource;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-
-class ApplicationController
+class ApplicationController extends Controller
 {
-    use ValidatesRequests;
 
     public function index(Request $request)
     {

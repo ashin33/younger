@@ -6,7 +6,6 @@ namespace App\Service\YiLianYunService;
 
 use App\Config\YlyConfig;
 use App\Models\Order;
-use App\Protocol\YlyRpcClient;
 use Illuminate\Support\Str;
 
 class PrintService extends \App\Api\PrintService

@@ -9,17 +9,16 @@
 namespace App\Http\Controllers\Printer;
 
 
+use App\Http\Controllers\Controller;
 use App\Models\Application;
 use App\Models\Printer;
 use App\Service\YiLianYunService\ApplicationService;
 use App\Service\YiLianYunService\PrinterService;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 
 
-class PrinterController
+class PrinterController extends Controller
 {
-    use ValidatesRequests;
 
     public function index(Request $request)
     {

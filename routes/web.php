@@ -23,7 +23,7 @@ Route::group([
 });
 
 Route::group([
-    'namespace' => 'Order',
+    'namespace' => 'V1Order',
     'prefix' => 'orders'
 ], function () {
     Route::get('/{date}', 'OrderController@index')->name('order.index');

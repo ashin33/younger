@@ -13,7 +13,8 @@ class Application extends Model
         'name',
         'client_id',
         'client_secret',
-        'access_token'
+        'access_token',
+        'status',
     ];
 
     const STATUS_ENABLED = 'enabled';
@@ -61,6 +62,10 @@ class Application extends Model
         $query->where('status', self::STATUS_ENABLED);
     }
 
+
+    /**
+     * @return Application
+     */
     public static function getEnabledApplication()
     {
         return self::query()->enabled()->first();

@@ -91,7 +91,7 @@ class Printer extends Model
     }
 
     /**
-     * @return mixed
+     * @return Printer
      */
     public static function getEnabledPrinter()
     {
